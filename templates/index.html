@@ -1,1 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Risk Protection Dashboard</title>
+    <script src="https://tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans antialiased">
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- Sidebar Shell -->
+        <div class="w-64 bg-gray-950 border-r border-gray-800 p-6">
+            <h1 class="text-xl font-bold text-red-500 tracking-wide mb-8">🛡️ DRP Cloud v1.0</h1>
+            <nav class="space-y-3">
+                <a href="#" class="block bg-gray-800 text-white px-4 py-2.5 rounded-lg font-medium">Dashboard Console</a>
+                <a href="#" class="block text-gray-400 hover:text-white px-4 py-2.5 rounded-lg transition">Active Incidents</a>
+            </nav>
+        </div>
+
+        <!-- Working Field Window -->
+        <div class="flex-1 flex flex-col overflow-y-auto p-8">
+            <header class="mb-8">
+                <h2 class="text-3xl font-extrabold tracking-tight">Social & App Monitoring Control</h2>
+                <p class="text-gray-400 mt-1">Submit suspected assets to trigger cloud-based analytics runs.</p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Input Control Panel -->
+                <div class="lg:col-span-1 bg-gray-950 border border-gray-800 rounded-xl p-6 shadow-xl h-fit">
+                    <h3 class="text-lg font-semibold border-b border-gray-800 pb-3 mb-4 text-gray-200">Ingest Suspected Asset</h3>
+                    <form id="scanForm" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Target Brand Registration Name</label>
+                            <input type="text" id="target_brand_name" value="AcmeCorp" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-red-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Impersonator Profile/App Name</label>
+                            
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Asset Environment Source</label>
+                            <select id="asset_type" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-red-500">
+                                <option value="social_profile">Social Media Profile</option>
+                                <option value="brand_page">Fake Brand Page</option>
+                                <option value="mobile_app">Rogue Mobile Application</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Source Platform / Store</label>
+                            <input type="text" id="source_platform" placeholder="e.g., Google Play Store, Twitter" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-red-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Target URL / App Package ID</label>
+                            <input type="text" id="profile_url_or_package_id" placeholder="e.g., com.acme.scampay" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-red-500" required>
+                        </div>
+                        <div class="flex items-center space-x-3 pt-2">
+                            <input type="checkbox" id="has_phishing_links" class="w-4 h-4 rounded text-red-500 focus:ring-0 bg-gray-900 border-gray-700">
+                            <label for="has_phishing_links" class="text-sm font-medium text-gray-300">Contains Phishing Link</label>
+                        </div>
+                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg tracking-wide transition shadow-lg">Run Analysis Engine</button>
+                    </form>
+                </div>
+
+                <!-- Display Terminal Diagnostics -->
+                <div class="lg:col-span-2 bg-gray-950 border border-gray-800 rounded-xl p-6 shadow-xl flex flex-col min-h-[400px]">
+                    <h3 class="text-lg font-semibold border-b border-gray-800 pb-3 mb-4 text-gray-200">Real-Time Cloud Diagnostics</h3>
+                    <div id="placeholderText" class="flex-1 flex flex-col items-center justify-center text-center text-gray-500">
+                        <span class="text-4xl mb-2">⚡</span>
+                        <p>No active assessment processed yet. Ingest an incident parameter to test cloud pipeline tracking metrics.</p>
+                    </div>
+                    
+                    <!-- Scoring Layout Matrix Output -->
+                    <div id="resultContent" class="hidden space-y-6">
+                        <div class="flex items-center justify-between bg-gray-900 p-4 rounded-lg border border-gray-800">
+                            <div>
+                                <p class="text-xs uppercase tracking-wider font-bold text-gray-400">Threat Matrix Score</p>
+                                <p id="resScore" class="text-4xl font-black text-red-500 mt-1">0/100</p>
+                            </div>
+                            <span id="resStatus" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"></span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-gray-900 p-4 rounded-lg border border-gray-800">
+                                <span class="text-xs font-bold text-gray-400 block mb-1">Text Match Similarity</span>
+                                <span id="resTextMatch" class="text-xl font-bold">0%</span>
+                            </div>
+                            <div class="bg-gray-900 p-4 rounded-lg border border-gray-800">
+                                <span class="text-xs font-bold text-gray-400 block mb-1">Logo/Vision Match</span>
+                                <span id="resVisualMatch" class="text-xl font-bold">0%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-gray-400 block mb-2">Evidentiary Anomaly Discovers</span>
+                            <ul id="resReasons" class="space-y-1.5 list-disc pl-5 text-sm text-gray-300"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Frontend Communications Script -->
+    <script>
+        document.getElementById('scanForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const payload = {
+                brand_id: "brand_cloud_deployment_x",
+                target_brand_name: document.getElementById('target_brand_name').value,
+                asset_type: document.getElementById('asset_type').value,
+                source_platform: document.getElementById('source_platform').value,
+                claimed_identity: document.getElementById('claimed_identity').value,
+                profile_url_or_package_id: document.getElementById('profile_url_or_package_id').value,
+                avatar_url: "https://googleapis.com",
+                follower_count: 2400,
+                has_phishing_links: document.getElementById('has_phishing_links').checked
+            };
+
+            try {
+                // Dynamically queries the local container loopback route relative to its workspace mapping domain
+                const response = await fetch('/api/v1/scan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+
+                document.getElementById('placeholderText').classList.add('hidden');
+                document.getElementById('resultContent').classList.remove('hidden');
+
+                document.getElementById('resScore').innerText = `${data.risk_score}/100`;
+                document.getElementById('resTextMatch').innerText = `${data.text_similarity_score}%`;
+                document.getElementById('resVisualMatch').innerText = `${data.visual_similarity_score}%`;
+
+                const statusBadge = document.getElementById('resStatus');
+                statusBadge.innerText = data.status.replace(/_/g, ' ');
+                if(data.risk_score >= 75) {
+                    statusBadge.className = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-red-950 text-red-400 border border-red-800";
+                } else {
+                    statusBadge.className = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-yellow-950 text-yellow-400 border border-yellow-800";
+                }
+
+                const reasonsContainer = document.getElementById('resReasons');
+                reasonsContainer.innerHTML = '';
+                if(data.flagged_reasons.length === 0) {
+
 
